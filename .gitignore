@@ -1,0 +1,95 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Processed Data Files
+processed_data.json
+*.json
+
+# Input Documents (Personal Data)
+input_documents/
+*.pdf
+*.docx
+*.doc
+
+# Code Files (if containing sensitive info)
+# Uncomment if your code files contain sensitive data
+# *.py
+# *.js
+# *.html
+# *.css
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Vector Store Data
+*.faiss
+*.pkl
+*.pickle
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit
+.streamlit/
+
+# Temporary files
+*.tmp
+*.temp
