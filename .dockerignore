@@ -1,0 +1,5 @@
+.venv
+.vscode
+input_documents
+*.local
+__pycache__/

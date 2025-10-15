@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+from PDFtoJSON import PDFtoJSON
 from typing import List, Dict, Any
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
@@ -14,8 +15,8 @@ from langchain.prompts import PromptTemplate
 load_dotenv()
 
 class JobMatcherRAG:
-    def __init__(self, processed_data_file: str = "processed_data.json"):
-        self.processed_data_file = processed_data_file
+    def __init__(self, input_folder: str = "input_documents"):
+        self.input_folder = input_folder
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
         self.model_name = os.getenv("MODEL_NAME", "gpt-4o-mini")  # Default fallback
         self.temperature = float(os.getenv("TEMPERATURE", "0.1"))  # Default fallback
@@ -42,10 +43,11 @@ class JobMatcherRAG:
         
     def load_documents(self):
         """Load processed documents from JSON file"""
+
         try:
-            with open(self.processed_data_file, 'r', encoding='utf-8') as file:
-                data = json.load(file)
-            
+            pdf_to_json = PDFtoJSON(self.input_folder)
+            data = pdf_to_json.process_documents()
+
             # Process PDF documents
             for pdf in data.get('pdfs', []):
                 doc = Document(

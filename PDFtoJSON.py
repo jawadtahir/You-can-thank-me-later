@@ -99,6 +99,8 @@ class PDFtoJSON:
         
         print(f"\nProcessed {len(self.processed_data['pdfs'])} PDF files")
         print(f"Processed {len(self.processed_data['code_files'])} code files")
+
+        return self.processed_data
     
     def save_to_json(self):
         """Save processed data to JSON file"""

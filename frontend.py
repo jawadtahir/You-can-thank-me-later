@@ -103,34 +103,26 @@ def main():
     initialize_session_state()
     
     # Header
-    st.markdown('<h1 class="main-header">Jawad Tahir</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">AIRel</h1>', unsafe_allow_html=True)
     
     # Sidebar for information
     with st.sidebar:
         st.header("How it works")
         st.markdown("""
-        1. **Upload your documents** (CV, thesis, research papers, code files) using PDFtoJSON.py
+        1. **Upload your documents** (CV, thesis, research papers, code files) using the uploader
         2. **Enter a job posting URL** in the input field
         3. **Click 'Analyze Job Fit'** to get AI-powered analysis
         4. **Review the results** to see your fit score and recommendations
         """)
         
-        st.header("System Status")
-        
-        # Check if processed data exists
-        if os.path.exists("processed_data.json"):
-            st.success("Documents processed")
-            try:
-                import json
-                with open("processed_data.json", 'r') as f:
-                    data = json.load(f)
-                st.write(f"PDFs: {data['metadata']['total_pdfs']}")
-                st.write(f"Code files: {data['metadata']['total_code_files']}")
-            except:
-                pass
-        else:
-            st.error("No processed documents found")
-            st.markdown("Run `python PDFtoJSON.py` first")
+        #st.header("System Status")
+        uploaded_files = st.file_uploader("**Upload Documents**", type=None, accept_multiple_files=True, key="file_upload")
+
+        with st.spinner("Uploading files..."):
+            for uploaded_file in uploaded_files:
+                with open(os.path.join("input_documents", uploaded_file.name), "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+            
         
         # Check API key
         from dotenv import load_dotenv
@@ -144,7 +136,7 @@ def main():
     col1, col2 = st.columns([3, 1])
     
     with col1:
-        st.header("Job Posting Analysis")
+        st.header("[A]m [I] [Rel]atable to this job? Check below!")
         
         # Job URL input
         job_url = st.text_input(
