@@ -1,0 +1,109 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-frontend
+  labels:
+    app: streamlit-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-frontend
+  template:
+    metadata:
+      labels:
+        app: streamlit-frontend
+    spec:
+      containers:
+      - name: streamlit
+        image: docker.io/jawadtahir/airel:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8501
+          name: http
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: OPENAI_API_KEY
+        volumeMounts:
+        - name: input-documents
+          mountPath: /app/input_documents
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8501
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8501
+          initialDelaySeconds: 15
+          periodSeconds: 5
+      volumes:
+      - name: input-documents
+        persistentVolumeClaim:
+          claimName: airel-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: streamlit-frontend-service
+  labels:
+    app: streamlit-frontend
+spec:
+  type: LoadBalancer  # Change to NodePort or ClusterIP based on your needs
+  loadBalancerIP: 34.152.8.45
+  ports:
+  - port: 8501
+    targetPort: 8501
+    protocol: TCP
+    name: http
+  selector:
+    app: streamlit-frontend
+
+
+
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: ingress-security-config
+spec:
+  sslPolicy: gke-ingress-ssl-policy-https
+  redirectToHttps:
+    enabled: true
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secure-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: airel-ip
+    networking.gke.io/managed-certificates: airel-certificate
+    networking.gke.io/v1beta1.FrontendConfig: ingress-security-config
+spec:
+  ingressClassName: gce
+  rules:
+  - host: airel.jawadtahir.de
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: streamlit-frontend-service
+            port:
+              number: 8501
