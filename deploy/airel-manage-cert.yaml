@@ -1,0 +1,12 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: airel-cert
+spec:
+  domains:
+    - jawadtahir.de
+    - www.jawadtahir.de
+    - airel.jawadtahir.de
+    - blog.jawadtahir.de
+    - cv.jawadtahir.de
+    - projects.jawadtahir.de

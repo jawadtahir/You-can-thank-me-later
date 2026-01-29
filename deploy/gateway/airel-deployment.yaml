@@ -62,8 +62,8 @@ metadata:
   labels:
     app: streamlit-frontend
 spec:
-  type: LoadBalancer  # Change to NodePort or ClusterIP based on your needs
-  loadBalancerIP: 34.152.8.45
+  # type: LoadBalancer  # Change to NodePort or ClusterIP based on your needs
+  # loadBalancerIP: 34.152.8.45
   ports:
   - port: 8501
     targetPort: 8501
@@ -74,61 +74,32 @@ spec:
 
 
 
----
-apiVersion: networking.gke.io/v1beta1
-kind: FrontendConfig
-metadata:
-  name: ingress-security-config
-spec:
-  sslPolicy: gke-ingress-ssl-policy-https
-  redirectToHttps:
-    enabled: true
+# ---
+# apiVersion: networking.gke.io/v1beta1
+# kind: FrontendConfig
+# metadata:
+#   name: ingress-security-config
+# spec:
+#   sslPolicy: gke-ingress-ssl-policy-https
+#   redirectToHttps:
+#     enabled: true
 
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: secure-ingress
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: airel-ip
-    kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: airel-cert
-    networking.gke.io/v1beta1.FrontendConfig: ingress-security-config
-spec:
-  defaultBackend:
-    service:
-      name: streamlit-frontend-service
-      port:
-        number: 8501
-        
-
-
-  # ingressClassName: gce
-  # rules:
-  # - host: airel.jawadtahir.de
-  #   http:
-  #     paths:
-  #     - path: "/"
-  #       pathType: Prefix
-  #       backend:
-  #         service:
-  #           name: streamlit-frontend-service
-  #           port:
-  #             number: 8501
-
+# ---
 
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: managed-cert-ingress
+#   name: secure-ingress
 #   annotations:
-#     kubernetes.io/ingress.global-static-ip-name: ADDRESS_NAME
-#     networking.gke.io/managed-certificates: managed-cert
+#     kubernetes.io/ingress.global-static-ip-name: airel-ip
 #     kubernetes.io/ingress.class: "gce"
+#     networking.gke.io/managed-certificates: airel-cert
+#     networking.gke.io/v1beta1.FrontendConfig: ingress-security-config
 # spec:
 #   defaultBackend:
 #     service:
-#       name: mc-service
+#       name: streamlit-frontend-service
 #       port:
-#         number: SERVICE_PORT
+#         number: 8501
+        
+
