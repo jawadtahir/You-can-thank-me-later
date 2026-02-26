@@ -5,46 +5,46 @@ from backend import JobMatcherRAG
 
 # Page configuration
 st.set_page_config(
-    page_title="Jawad Tahir's Job Fit Analyzer",
+    page_title="AIRel - AI Job Fit Analyzer",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 3rem;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .result-box {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-    }
-    .success-box {
-        background-color: #d4edda;
-        border-left: 5px solid #28a745;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    .error-box {
-        background-color: #f8d7da;
-        border-left: 5px solid #dc3545;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    .info-box {
-        background-color: #e2e3e5;
-        border-left: 5px solid #6c757d;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-</style>
-""", unsafe_allow_html=True)
+# # Custom CSS for better styling
+# st.markdown("""
+# <style>
+#     .main-header {
+#         font-size: 3rem;
+#         color: #1f77b4;
+#         text-align: center;
+#         margin-bottom: 2rem;
+#     }
+#     .result-box {
+#         background-color: #f0f2f6;
+#         padding: 1rem;
+#         border-radius: 10px;
+#         margin: 1rem 0;
+#     }
+#     .success-box {
+#         background-color: #d4edda;
+#         border-left: 5px solid #28a745;
+#         padding: 1rem;
+#         margin: 1rem 0;
+#     }
+#     .error-box {
+#         background-color: #f8d7da;
+#         border-left: 5px solid #dc3545;
+#         padding: 1rem;
+#         margin: 1rem 0;
+#     }
+#     .info-box {
+#         background-color: #e2e3e5;
+#         border-left: 5px solid #6c757d;
+#         padding: 1rem;
+#         margin: 1rem 0;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
 
 def initialize_session_state():
     """Initialize session state variables"""
@@ -244,7 +244,7 @@ def main():
     st.markdown("---")
     st.markdown(
         '<p style="text-align: center; color: #666; font-size: 0.8rem;">'
-        'Built with the help of my super smart young sister</p>',
+        'Built with the help of my super <a href="https://github.com/princess-humario" target="_blank">smart</a> younger sister</p>',
         unsafe_allow_html=True
     )
 

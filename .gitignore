@@ -90,6 +90,9 @@ htmlcov/
 # Streamlit
 .streamlit/
 
+# uploads (if you want to ignore uploaded files, otherwise comment out)
+uploads/
+
 # Temporary files
 *.tmp
 *.temp
