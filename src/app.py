@@ -45,7 +45,7 @@ def mark_keyword_selection_as_changed():
 def main():
 
     initialize_session_state()
-    file_uploader_page = st.Page("pages/1_file_uploader.py")
+    _ = st.Page("pages/1_file_uploader.py")
 
     st.title("AIRel - AI Job Fit Analyzer")
 

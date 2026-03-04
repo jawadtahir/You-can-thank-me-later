@@ -8,7 +8,6 @@ import hashlib
 import shutil
 import uuid
 import json
-from typing import Dict
 import re
 import traceback
 
@@ -201,10 +200,6 @@ def _read_file_bytes(path: Path) -> bytes:
         return b""
 
 
-def _sanitize_key(s: str) -> str:
-    """Return a widget-safe key by replacing non-alphanumeric characters with underscores."""
-    # keep alphanumerics and underscore only
-    return re.sub(r"[^0-9a-zA-Z_]+", "_", s)
 
 
 def _widget_key(prefix: str, name: str) -> str:
@@ -419,7 +414,6 @@ def render() -> None:
                             cols[2].write("")
                         else:
                             view_key = _widget_key("view", entry_rel.as_posix())
-                            exp_key = _widget_key("exp", entry_rel.as_posix())
                             if cols[2].button("View", key=view_key):
                                 ext = entry.suffix.lower()
                                 try:
@@ -471,7 +465,7 @@ def render() -> None:
                 def _recompute_selected_from_widget_keys() -> None:
                     try:
                         sel = []
-                        for r, ds, fs in os.walk(file_dir):
+                        for r, _, fs in os.walk(file_dir):
                             rp = Path(r)
                             for fn in fs:
                                 rel = rp.relative_to(file_dir) / fn if rp != file_dir else Path(fn)
@@ -490,7 +484,7 @@ def render() -> None:
                 # select all
                 if cols[0].button("Select all"):
                     all_files = []
-                    for r, ds, fs in os.walk(file_dir):
+                    for r, _, fs in os.walk(file_dir):
                         rp = Path(r)
                         for fn in fs:
                             rel = rp.relative_to(file_dir) / fn if rp != file_dir else Path(fn)
@@ -510,7 +504,7 @@ def render() -> None:
                     # clear selected_files and reset per-checkbox states
                     try:
                         all_keys = []
-                        for r, ds, fs in os.walk(file_dir):
+                        for r, _, fs in os.walk(file_dir):
                             rp = Path(r)
                             for fn in fs:
                                 rel = rp.relative_to(file_dir) / fn if rp != file_dir else Path(fn)
@@ -611,7 +605,7 @@ def render() -> None:
         temp_name = f".tmp-{uuid.uuid4().hex}"
         temp_path = dest.parent / temp_name
         try:
-            sha, written, _ = _stream_save_and_hash(uploaded, temp_path, _update_progress)
+            sha, _, _ = _stream_save_and_hash(uploaded, temp_path, _update_progress)
             # if we already have this content saved somewhere, link/copy instead of keeping duplicate
             existing = st.session_state[_FINGERPRINTS_KEY].get(sha)
             if existing and Path(existing).exists():
