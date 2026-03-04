@@ -422,32 +422,36 @@ def render() -> None:
                             exp_key = _widget_key("exp", entry_rel.as_posix())
                             if cols[2].button("View", key=view_key):
                                 ext = entry.suffix.lower()
-                                with st.expander(f"Preview: {entry_rel.as_posix()}", expanded=True, key=exp_key):
-                                    # images
-                                    if ext in (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"):
-                                        try:
-                                            st.image(data, caption=entry.name)
-                                        except Exception:
-                                            st.write("(unable to render image)")
-                                    # text-like files
-                                    elif ext in (".txt", ".py", ".md", ".json", ".csv", ".log"):
-                                        try:
-                                            text = data.decode("utf-8")
-                                        except Exception:
-                                            text = data.decode("latin-1", errors="replace")
-                                        st.code(text)
-                                    # PDFs: render in iframe via data URL
-                                    elif ext == ".pdf":
-                                        try:
-                                            b64 = base64.b64encode(data).decode("utf-8")
-                                            pdf_display = f'<iframe src="data:application/pdf;base64,{b64}" width="100%" height="600px"></iframe>'
-                                            st.components.v1.html(pdf_display, height=600)
-                                        except Exception:
-                                            st.write("(unable to render PDF)")
-                                    else:
-                                        st.write(f"No preview available for *{ext}* files.")
-                    except Exception:
-                        cols[2].write("")
+                                try:
+                                    with st.expander(f"Preview: {entry_rel.as_posix()}", expanded=True):
+                                        # images
+                                        if ext in (".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp"):
+                                            try:
+                                                st.image(data, caption=entry.name)
+                                            except Exception:
+                                                st.write("(unable to render image)")
+                                        # text-like files
+                                        elif ext in (
+                                            ".txt", ".py", ".md", 
+                                            ".json", ".csv", ".log",
+                                            ".yaml", ".yml", ".java"):
+                                            try:
+                                                text = data.decode("utf-8")
+                                            except Exception:
+                                                text = data.decode("latin-1", errors="replace")
+                                            st.code(text)
+                                        # PDFs: render in iframe via data URL
+                                        elif ext == ".pdf":
+                                            try:
+                                                st.pdf(data, height=250)
+                                            except Exception as e:
+                                                st.write(f"(unable to render PDF: {e})")
+                                        else:
+                                            st.write(f"No preview available for *{ext}* files.")
+                                except Exception as e:
+                                    st.write(f"(unable to render preview: {e})")
+                    except Exception as e:
+                        cols[2].write(f"Error reading file: {e}")
 
                     # delete button (use helper)
                     del_key = _widget_key("del", entry_rel.as_posix())
